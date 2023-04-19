@@ -14,5 +14,5 @@ class Hotel(Base):
 	room_quantity = Column(Integer, nullable=False)
 	image_id = Column(Integer)
 
-	room = relationship("Room", back_populates="hotel")
+	room = relationship('Room', back_populates="hotel")
 

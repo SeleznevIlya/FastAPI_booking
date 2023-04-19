@@ -1,7 +1,7 @@
-from sqlalchemy.orm import relationship
-
 from app.database import Base
 from sqlalchemy import Column, String, Integer, JSON, ForeignKey
+from sqlalchemy.orm import relationship
+from app.hotels.models import Hotel
 
 
 class Room(Base):
@@ -18,3 +18,4 @@ class Room(Base):
 
 	hotel = relationship('Hotel', back_populates='room')
 	booking = relationship('Booking', back_populates='room')
+	

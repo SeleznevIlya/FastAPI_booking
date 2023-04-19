@@ -2,6 +2,8 @@ from sqlalchemy.orm import relationship
 
 from app.database import Base
 from sqlalchemy import Column, String, Integer, JSON, ForeignKey, Date, Computed
+from app.hotels.rooms.models import Room
+from app.auth.models import User
 
 
 class Booking(Base):
