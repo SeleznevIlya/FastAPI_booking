@@ -11,6 +11,9 @@ class Settings(BaseSettings):
 	POSTGRESQL_DATABASE_NAME: str
 	POSTGRESQL_PASSWORD: str
 
+	SECRET_KEY: str
+	ALGORITHM: str
+
 	@property
 	def DATABASE_URL(self):
 		return (f'postgresql+asyncpg://{self.POSTGRESQL_USERNAME}:'
