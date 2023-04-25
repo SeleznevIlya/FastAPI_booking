@@ -19,9 +19,14 @@ async def get_bookings(user: User = Depends(get_current_user)) -> list[SBooking]
 	return await BookingDAO.find_all(user_id=user.id)
 
 
-@router.get("/{booking_id}")
-def get_booking(booking_id):
+@router.get("/{booking_id}/", response_model=SBooking)
+async def get_booking(booking_id, user: User = Depends(get_current_user)):
 	pass
+
+
+@router.delete("/{booking_id}/")
+async def delete_booking(booking_id: int, user: User = Depends(get_current_user)):
+	return await BookingDAO.delete(id=booking_id, user_id=user.id)
 
 
 @router.post("/")

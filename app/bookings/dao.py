@@ -39,8 +39,7 @@ class BookingDAO(BaseDAO):
 
 		get_rooms_left = select(
 			(Room.quantity - func.count(booked_rooms.c.room_id)).label("rooms_left")
-			).select_from(Room).join(
-			booked_rooms, booked_rooms.c.room_id == Room.id, isouter=True
+			).select_from(Room).join(booked_rooms, booked_rooms.c.room_id == Room.id, isouter=True
 			).where(Room.id == room_id).group_by(
 			Room.quantity, booked_rooms.c.room_id
 			)
