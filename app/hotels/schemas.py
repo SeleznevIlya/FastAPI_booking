@@ -1,4 +1,3 @@
-
 from pydantic import BaseModel, json, Field
 from typing import Optional
 
@@ -14,3 +13,4 @@ class SHotel(BaseModel):
 
 	class Config:
 		orm_mode = True
+
