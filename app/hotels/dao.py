@@ -42,6 +42,7 @@ class HotelDAO(BaseDAO):
 												 ).select_from(Hotel).join(
 												booked_hotel_rooms, Hotel.id == booked_hotel_rooms.c.hotel_id, isouter=True
 												).filter(cls.model.location.like(f'%{location}%')
+												).having((Hotel.room_quantity - func.count(booked_hotel_rooms.c.hotel_id)) > 0
 												).group_by(Hotel.id, Hotel.name, Hotel.location, Hotel.room_quantity, booked_hotel_rooms.c.hotel_id)
 
 		async with async_session_maker() as session:
