@@ -2,7 +2,7 @@ from app.bookings.models import Booking
 from app.dao.base import BaseDAO
 from app.database import async_session_maker
 from app.hotels.rooms.models import Room
-from sqlalchemy import select, and_, func
+from sqlalchemy import select, and_, func, or_
 from datetime import date
 from app.database import engine
 
@@ -17,9 +17,10 @@ class RoomDAO(BaseDAO):
 
 		"""
 		select r.id, r.hotel_id, r.name, r.quantity,r.quantity-count(b.id), count(b.id)  from public.room as r
-		left join public.booking as b on r.id = b.room_id
-		where b.date_to >= '2023-06-20' and
-				b.date_from <= '2023-07-05' and r.hotel_id = 6
+		left join public.booking as b on b.room_id = r.id
+		where ((b.date_to >= '2023-06-20' and
+				b.date_from <= '2023-07-05')or (b.date_to is null and b.date_from is null)) 
+				and r.hotel_id = 2
 		group by r.id;
 		"""
 
@@ -31,12 +32,23 @@ class RoomDAO(BaseDAO):
 							Room.price,
 							Room.quantity,
 							Room.image_id,
-							(total_days*Room.price).label('total_price'),
+							(total_days * Room.price).label('total_price'),
 							(Room.quantity - func.count(Booking.id)).label("rooms_left")
 							).join(Booking, Booking.room_id == Room.id, isouter=True).\
-								where(and_(Booking.date_to >= date_from),
-									and_(Booking.date_from <= date_to),
-									  and_(Room.hotel_id == hotel_id)).group_by(Room.id)
+								where(
+									and_(Room.hotel_id == hotel_id,
+									or_(
+										and_(
+											Booking.date_from <= date_to,
+											Booking.date_to >= date_from
+										),
+									  	and_(
+											Booking.date_to == None,
+											Booking.date_from == None
+										)
+									)
+								)
+							).group_by(Room.id)
 
 		# print(hotel_rooms.compile(engine, compile_kwargs={"literal_binds": True}))
 
