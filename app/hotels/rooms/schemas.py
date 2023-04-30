@@ -6,7 +6,7 @@ class SRoom(BaseModel):
 	id: int
 	hotel_id: int
 	name: str
-	description: str
+	description: str | None = None
 	price: int
 	services: list
 	quantity: int
@@ -16,11 +16,7 @@ class SRoom(BaseModel):
 		orm_mode = True
 
 
-class SRoom_Price(BaseModel):
-	id: int
-	hotel_id: int
-	name: str
-	total_price: timedelta
+class SRoomPrice(SRoom):
+	total_price: int
+	rooms_left: int
 
-	class Config:
-		orm_mode = True

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.hotels.dao import HotelDAO
 from app.hotels.rooms.dao import RoomDAO
-from app.hotels.rooms.schemas import SRoom, SRoom_Price
+from app.hotels.rooms.schemas import SRoom, SRoomPrice
 from app.hotels.schemas import SHotel
 from datetime import date
 
@@ -17,7 +17,7 @@ async def get_hotels():
 	return await HotelDAO.find_all()
 
 
-@router.get('/{hotel_id}/rooms', response_model=list[SRoom_Price])
+@router.get('/{hotel_id}/rooms', response_model=list[SRoomPrice])
 async def get_hotels_rooms(hotel_id: int, date_from: date, date_to: date):
 	return await RoomDAO.get_hotel_rooms(hotel_id, date_from, date_to)
 	#return await RoomDAO.find_all(hotel_id=hotel_id)
