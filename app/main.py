@@ -2,6 +2,13 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi_cache.decorator import cache
+from app.config import settings
+
+from redis import asyncio as aioredis
+
 from app.bookings.router import router as router_bookings
 from app.auth.router import router as auth_router
 from app.hotels.router import router as router_hotels
@@ -30,5 +37,11 @@ app.include_router(router_bookings)
 app.include_router(router_hotels)
 app.include_router(router_pages)
 app.include_router(router_images)
+
+
+@app.on_event("startup")
+async def startup():
+    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}")
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 

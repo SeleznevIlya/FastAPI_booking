@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status, Query
+from pydantic import parse_obj_as
 
 from app.auth.dependencies import get_current_user
 from app.bookings.dao import BookingDAO
@@ -7,6 +8,7 @@ from app.auth.models import User
 from datetime import date, datetime
 
 from app.exceptions import RoomCannotBeBooked
+from app.tasks.tasks import send_booking_confirmation_email
 
 router = APIRouter(
 	prefix='/booking',
@@ -35,5 +37,7 @@ async def add_booking(room_id: int,
 					date_to: date = Query(..., description=f"Haпpuмep, {datetime.now().date()}"),
 					user: User = Depends(get_current_user)):
 	booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
+	booking_dict = parse_obj_as(SBooking, booking).dict()
+	send_booking_confirmation_email.delay(booking_dict, user.email)
 	if not booking:
 		raise RoomCannotBeBooked(status_code=status.HTTP_409_CONFLICT, detail="Свободных номеров нет",)

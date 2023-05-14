@@ -11,6 +11,14 @@ class Settings(BaseSettings):
 	POSTGRESQL_DATABASE_NAME: str
 	POSTGRESQL_PASSWORD: str
 
+	SMTP_HOST: str
+	SMTP_PORT: int
+	SMTP_USERNAME: str
+	SMTP_PASSWORD: str
+
+	REDIS_HOST: str
+	REDIS_PORT: int
+
 	SECRET_KEY: str
 	ALGORITHM: str
 

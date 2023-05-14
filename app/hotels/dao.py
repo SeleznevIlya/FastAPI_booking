@@ -47,5 +47,5 @@ class HotelDAO(BaseDAO):
 
 		async with async_session_maker() as session:
 			result = await session.execute(get_hotels_with_remaining_rooms)
-			return result.all()
+			return result.mappings().all()
 
