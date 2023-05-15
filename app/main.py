@@ -5,10 +5,14 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
 from fastapi_cache.decorator import cache
-from app.config import settings
+from sqladmin import Admin, ModelView
 
 from redis import asyncio as aioredis
 
+from app.config import settings
+from app.admin.views import UserAdmin, BookingAdmin, HotelAdmin, RoomAdmin
+from app.admin.auth import authentication_backend
+from app.database import engine
 from app.bookings.router import router as router_bookings
 from app.auth.router import router as auth_router
 from app.hotels.router import router as router_hotels
@@ -16,6 +20,12 @@ from app.pages.router import router as router_pages
 from app.images.router import router as router_images
 
 app = FastAPI()
+admin = Admin(app, engine, authentication_backend=authentication_backend,)
+
+admin.add_view(UserAdmin)
+admin.add_view(BookingAdmin)
+admin.add_view(HotelAdmin)
+admin.add_view(RoomAdmin)
 
 app.mount("/static", StaticFiles(directory="app/static"), "static")
 

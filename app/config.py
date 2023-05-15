@@ -16,6 +16,8 @@ class Settings(BaseSettings):
 	SMTP_USERNAME: str
 	SMTP_PASSWORD: str
 
+	SMTP_TEST_USER: str
+
 	REDIS_HOST: str
 	REDIS_PORT: int
 

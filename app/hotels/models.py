@@ -16,3 +16,5 @@ class Hotel(Base):
 
 	room = relationship('Room', back_populates="hotel")
 
+	def __str__(self):
+		return f"Отель {self.name}"

@@ -20,3 +20,6 @@ class Booking(Base):
 
 	room = relationship('Room', back_populates='booking')
 	user = relationship('User', back_populates='booking')
+
+	def __str__(self):
+		return f"Бронь №{self.id}"
