@@ -4,7 +4,6 @@ from starlette.middleware.cors import CORSMiddleware
 
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi_cache.decorator import cache
 from sqladmin import Admin, ModelView
 
 from redis import asyncio as aioredis

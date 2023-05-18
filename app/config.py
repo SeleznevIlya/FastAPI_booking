@@ -2,14 +2,23 @@
 # import os
 # load_dotenv()
 from pydantic import BaseSettings, root_validator
+from typing import Literal
 
 
 class Settings(BaseSettings):
+	MODE: Literal["DEV", "TEST", "PROD"]
+
 	POSTGRESQL_LOCALHOST: str
 	POSTGRESQL_PORT: int
 	POSTGRESQL_USERNAME: str
 	POSTGRESQL_DATABASE_NAME: str
 	POSTGRESQL_PASSWORD: str
+
+	TEST_POSTGRESQL_LOCALHOST: str
+	TEST_POSTGRESQL_PORT: int
+	TEST_POSTGRESQL_USERNAME: str
+	TEST_POSTGRESQL_DATABASE_NAME: str
+	TEST_POSTGRESQL_PASSWORD: str
 
 	SMTP_HOST: str
 	SMTP_PORT: int
@@ -29,6 +38,12 @@ class Settings(BaseSettings):
 		return (f'postgresql+asyncpg://{self.POSTGRESQL_USERNAME}:'
 				f'{self.POSTGRESQL_PASSWORD}@{self.POSTGRESQL_LOCALHOST}:'
 				f'{self.POSTGRESQL_PORT}/{self.POSTGRESQL_DATABASE_NAME}')
+
+	@property
+	def TEST_DATABASE_URL(self):
+		return (f'postgresql+asyncpg://{self.TEST_POSTGRESQL_USERNAME}:'
+				f'{self.TEST_POSTGRESQL_PASSWORD}@{self.TEST_POSTGRESQL_LOCALHOST}:'
+				f'{self.TEST_POSTGRESQL_PORT}/{self.TEST_POSTGRESQL_DATABASE_NAME}')
 
 	class Config:
 		env_file = '.env'
