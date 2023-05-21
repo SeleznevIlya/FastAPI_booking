@@ -27,3 +27,11 @@ class UserIsNotPresentException(HTTPException):
 
 class RoomCannotBeBooked(HTTPException):
 	pass
+
+
+class DateBookingException(HTTPException):
+	pass
+
+
+class BookingLimitExceededException(HTTPException):
+	pass

@@ -37,7 +37,8 @@ async def add_booking(room_id: int,
 					date_to: date = Query(..., description=f"Haпpuмep, {datetime.now().date()}"),
 					user: User = Depends(get_current_user)):
 	booking = await BookingDAO.add(user.id, room_id, date_from, date_to)
-	booking_dict = parse_obj_as(SBooking, booking).dict()
-	send_booking_confirmation_email.delay(booking_dict, user.email)
-	if not booking:
+	if booking:
+		booking_dict = parse_obj_as(SBooking, booking).dict()
+		send_booking_confirmation_email.delay(booking_dict, user.email)
+	else:
 		raise RoomCannotBeBooked(status_code=status.HTTP_409_CONFLICT, detail="Свободных номеров нет",)

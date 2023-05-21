@@ -1,4 +1,7 @@
 from fastapi import APIRouter, Query
+from starlette import status
+
+from app.exceptions import DateBookingException, BookingLimitExceededException
 from app.hotels.dao import HotelDAO
 from app.hotels.rooms.dao import RoomDAO
 from app.hotels.rooms.schemas import SRoom, SRoomPrice
@@ -23,6 +26,10 @@ async def get_hotels():
 async def get_hotels_rooms(hotel_id: int,
 							date_from: date = Query(..., description=f"Haпpuмep, {datetime.now().date()}"),
 							date_to: date = Query(..., description=f"Haпpuмep, {datetime.now().date()}")) -> list[SRoomPrice]:
+	if date_from > date_to:
+		raise DateBookingException(status_code=status.HTTP_400_BAD_REQUEST, detail="Ошибка ввода: дата заезда не может быть позже даты отъезда",)
+	if (date_to - date_from).days > 30:
+		raise BookingLimitExceededException(status_code=status.HTTP_400_BAD_REQUEST, detail="Нельзя забронировать комнату более чем на 30 дней",)
 	return await RoomDAO.get_hotel_rooms(hotel_id, date_from, date_to)
 
 
