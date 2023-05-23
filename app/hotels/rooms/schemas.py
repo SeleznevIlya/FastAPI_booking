@@ -1,5 +1,6 @@
-from pydantic import BaseModel, json
 from datetime import timedelta
+
+from pydantic import BaseModel, json
 
 
 class SRoom(BaseModel):

@@ -1,12 +1,17 @@
-from fastapi import Request, HTTPException, status, Depends
-from jose import jwt, JWTError, ExpiredSignatureError
+from datetime import datetime
+
+from fastapi import Depends, HTTPException, Request, status
+from jose import ExpiredSignatureError, JWTError, jwt
 
 from app.auth.dao import UserDAO
-from app.config import settings
-from datetime import datetime
 from app.auth.models import User
-from app.exceptions import TokenExpiredException, IncorrentTokenFormatException, UserIsNotPresentException, \
-	TokenAbsentException
+from app.config import settings
+from app.exceptions import (
+    IncorrentTokenFormatException,
+    TokenAbsentException,
+    TokenExpiredException,
+    UserIsNotPresentException,
+)
 
 
 def get_token(request: Request):

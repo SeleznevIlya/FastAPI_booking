@@ -1,19 +1,19 @@
-import pytest
-from app.database import Base, async_session_maker, engine
-from app.config import settings
-import json
-from sqlalchemy import insert
 import asyncio
+import json
 from datetime import datetime
 
-from app.hotels.models import Hotel
-from app.bookings.models import Booking
-from app.hotels.rooms.models import Room
-from app.auth.models import User
-from app.main import app as fastapi_app
-
+import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from sqlalchemy import insert
+
+from app.auth.models import User
+from app.bookings.models import Booking
+from app.config import settings
+from app.database import Base, async_session_maker, engine
+from app.hotels.models import Hotel
+from app.hotels.rooms.models import Room
+from app.main import app as fastapi_app
 
 
 @pytest.fixture(scope="session", autouse=True)

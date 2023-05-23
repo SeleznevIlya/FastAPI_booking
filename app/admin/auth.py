@@ -1,6 +1,6 @@
 from typing import Optional
-from fastapi import Depends
 
+from fastapi import Depends
 from sqladmin import Admin
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request

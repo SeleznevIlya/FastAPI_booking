@@ -1,7 +1,8 @@
 from sqladmin import ModelView
+
 from app.auth.models import User
-from app.hotels.models import Hotel
 from app.bookings.models import Booking
+from app.hotels.models import Hotel
 from app.hotels.rooms.models import Room
 
 

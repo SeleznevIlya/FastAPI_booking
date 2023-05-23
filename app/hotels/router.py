@@ -1,15 +1,15 @@
+import asyncio
+from datetime import date, datetime
+
 from fastapi import APIRouter, Query
+from fastapi_cache.decorator import cache
 from starlette import status
 
-from app.exceptions import DateBookingException, BookingLimitExceededException
+from app.exceptions import BookingLimitExceededException, DateBookingException
 from app.hotels.dao import HotelDAO
 from app.hotels.rooms.dao import RoomDAO
-from app.hotels.rooms.schemas import SRoom, SRoomPrice
+from app.hotels.rooms.schemas import SRoomPrice
 from app.hotels.schemas import SHotel
-from datetime import date, datetime
-from fastapi_cache.decorator import cache
-import asyncio
-
 
 router = APIRouter(
 	prefix="/hotels",

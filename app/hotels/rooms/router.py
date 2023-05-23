@@ -1,6 +1,6 @@
+from app.hotels.rooms.dao import RoomDAO
 from app.hotels.rooms.schemas import SRoom
 from app.hotels.router import router
-from app.hotels.rooms.dao import RoomDAO
 
 
 @router.get('/{hotel_id}/rooms', response_model=list[SRoom])

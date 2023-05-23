@@ -1,6 +1,7 @@
-from passlib.context import CryptContext
-from jose import jwt
 from datetime import datetime, timedelta
+
+from jose import jwt
+from passlib.context import CryptContext
 from pydantic import EmailStr
 
 from app.auth.dao import UserDAO

@@ -1,5 +1,6 @@
-from pydantic import BaseModel, json, Field
 from typing import Optional
+
+from pydantic import BaseModel, Field, json
 
 
 class SHotel(BaseModel):

@@ -1,12 +1,14 @@
 # from dotenv import load_dotenv
 # import os
 # load_dotenv()
-from pydantic import BaseSettings, root_validator
 from typing import Literal
+
+from pydantic import BaseSettings, root_validator
 
 
 class Settings(BaseSettings):
 	MODE: Literal["DEV", "TEST", "PROD"]
+	LOG_LEVEL: Literal["DEBUG", "INFO", "ERROR", "CRITICAL", "WARNING"]
 
 	POSTGRESQL_LOCALHOST: str
 	POSTGRESQL_PORT: int

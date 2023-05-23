@@ -1,5 +1,6 @@
-from app.auth.dao import UserDAO
 import pytest
+
+from app.auth.dao import UserDAO
 
 
 @pytest.mark.parametrize('user_id, email, exists', [
