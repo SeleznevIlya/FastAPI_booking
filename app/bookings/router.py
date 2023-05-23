@@ -21,9 +21,9 @@ async def get_bookings(user: User = Depends(get_current_user)) -> list[SBooking]
 	return await BookingDAO.find_all(user_id=user.id)
 
 
-@router.get("/{booking_id}/", response_model=SBooking)
-async def get_booking(booking_id, user: User = Depends(get_current_user)):
-	pass
+@router.get("/{booking_id}/",)
+async def get_booking(booking_id: int,):
+	return await BookingDAO.find_one_or_none(id=booking_id)
 
 
 @router.delete("/{booking_id}/")
