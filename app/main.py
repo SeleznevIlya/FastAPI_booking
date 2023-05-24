@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from fastapi_versioning import VersionedFastAPI, version
 from redis import asyncio as aioredis
 from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
@@ -24,19 +25,6 @@ sentry_sdk.init(
     dsn="https://708bf9ec5c184d3798d11d4827dbcafc@o4505234810798080.ingest.sentry.io/4505234815451136",
     traces_sample_rate=1.0,
 )
-
-admin = Admin(
-    app,
-    engine,
-    authentication_backend=authentication_backend,
-)
-
-admin.add_view(UserAdmin)
-admin.add_view(BookingAdmin)
-admin.add_view(HotelAdmin)
-admin.add_view(RoomAdmin)
-
-app.mount("/static", StaticFiles(directory="app/static"), "static")
 
 origins = [
     "http://localhost",
@@ -67,3 +55,26 @@ app.include_router(router_images)
 async def startup():
     redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}")
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+
+app = VersionedFastAPI(app,
+    version_format='{major}',
+    prefix_format='/v{major}',
+    # description='Greet users with a nice message',
+    # middleware=[
+    #     Middleware(SessionMiddleware, secret_key='mysecretkey')
+    # ]
+)
+
+admin = Admin(
+    app,
+    engine,
+    authentication_backend=authentication_backend,
+)
+
+admin.add_view(UserAdmin)
+admin.add_view(BookingAdmin)
+admin.add_view(HotelAdmin)
+admin.add_view(RoomAdmin)
+
+app.mount("/static", StaticFiles(directory="app/static"), "static")

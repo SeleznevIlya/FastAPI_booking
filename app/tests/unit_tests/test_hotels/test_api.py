@@ -8,7 +8,7 @@ from httpx import AsyncClient
 	(1, "2023-05-21", "2023-05-20", 400),
 ])
 async def test_get_hotels_rooms(hotel_id, date_from, date_to, status_code, authenticated_ac: AsyncClient):
-	response = await authenticated_ac.get(f"/hotels/{hotel_id}/rooms", params={
+	response = await authenticated_ac.get(f"/v1/hotels/{hotel_id}/rooms", params={
 		"hotel_id": hotel_id,
 		"date_from": date_from,
 		"date_to": date_to
