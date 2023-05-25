@@ -17,6 +17,7 @@ from app.database import engine
 from app.hotels.router import router as router_hotels
 from app.images.router import router as router_images
 from app.pages.router import router as router_pages
+from app.importer.router import router as router_importer
 
 
 app = FastAPI()
@@ -49,6 +50,7 @@ app.include_router(router_bookings)
 app.include_router(router_hotels)
 app.include_router(router_pages)
 app.include_router(router_images)
+app.include_router(router_importer)
 
 
 @app.on_event("startup")
