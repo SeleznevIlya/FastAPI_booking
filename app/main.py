@@ -7,6 +7,7 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 from starlette.middleware.cors import CORSMiddleware
 import sentry_sdk
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from app.admin.auth import authentication_backend
 from app.admin.views import BookingAdmin, HotelAdmin, RoomAdmin, UserAdmin
@@ -18,6 +19,7 @@ from app.hotels.router import router as router_hotels
 from app.images.router import router as router_images
 from app.pages.router import router as router_pages
 from app.importer.router import router as router_importer
+from app.prometheus.router import router as router_prometheus
 
 
 app = FastAPI()
@@ -26,6 +28,7 @@ sentry_sdk.init(
     dsn="https://708bf9ec5c184d3798d11d4827dbcafc@o4505234810798080.ingest.sentry.io/4505234815451136",
     traces_sample_rate=1.0,
 )
+
 
 origins = [
     "http://localhost",
@@ -51,6 +54,7 @@ app.include_router(router_hotels)
 app.include_router(router_pages)
 app.include_router(router_images)
 app.include_router(router_importer)
+app.include_router(router_prometheus)
 
 
 @app.on_event("startup")
@@ -67,6 +71,14 @@ app = VersionedFastAPI(app,
     #     Middleware(SessionMiddleware, secret_key='mysecretkey')
     # ]
 )
+
+
+instrumentator = Instrumentator(
+    should_group_status_codes=False,
+    excluded_handlers=[".*admin.*", "/metrics"],
+)
+instrumentator.instrument(app).expose(app)
+
 
 admin = Admin(
     app,
